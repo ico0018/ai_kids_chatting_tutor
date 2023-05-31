@@ -58,6 +58,7 @@ export default {
     async sendMessage() {
       if (this.newMessage.trim() !== '') {
         const user = this.users[0];
+        const userMessage = this.newMessage;
         user.messages.push({
           id: Date.now(),
           name: user.name,
@@ -72,7 +73,7 @@ export default {
         this.isWaitingForResponse = true;
 
         try {
-          const response = await sendMessage("User's message");
+          const response = await sendMessage(userMessage);
 
           const aiBot = this.users[1];
           aiBot.messages.push({
