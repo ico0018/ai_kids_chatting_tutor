@@ -7,9 +7,11 @@
         :name="message.name"
         :avatar="message.avatar"
         :text="message.text"
+        :img="message.imageUrl"
         :stamp="message.timestamp"
         :sent="message.sent"
         :bg-color="message.bgColor"
+        text-html
       />
       <q-input v-model="newMessage" outlined placeholder="Type a message" />
       <q-btn :disable="isWaitingForResponse" label="Send" @click="sendMessage">
@@ -76,15 +78,29 @@ export default {
           const response = await sendMessage(userMessage);
 
           const aiBot = this.users[1];
-          aiBot.messages.push({
-            id: Date.now(),
-            name: aiBot.name,
-            avatar: aiBot.avatar,
-            text: [response],
-            timestamp: new Date().toLocaleTimeString(),
-            sent: false,
-            bgColor: aiBot.bgColor,
-          });
+
+          /*if (typeof response === 'string') {
+            aiBot.messages.push({
+              id: Date.now(),
+              name: aiBot.name,
+              avatar: aiBot.avatar,
+              text: [response],
+              timestamp: new Date().toLocaleTimeString(),
+              sent: false,
+              bgColor: aiBot.bgColor,
+            });
+          } else if (response.imageUrl){*/
+            console.log(response);
+            aiBot.messages.push({
+              id: Date.now(),
+              name: aiBot.name,
+              avatar: aiBot.avatar,
+              text: [`<img src="${response}" alt="Image">`],
+              timestamp: new Date().toLocaleTimeString(),
+              sent: false,
+              bgColor: aiBot.bgColor,
+            });
+          //}
         } catch (error) {
           console.log('Error:', error);
         }
